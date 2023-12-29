@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin 
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 
+# This is custom user manager class. It Will be used to create custom user
 class UserManager(BaseUserManager):
   def create_user(self, email, password=None, **extra_fields):
     if not email:
@@ -18,6 +20,7 @@ class UserManager(BaseUserManager):
     return self.create_user(email,password, **extra_fields)
 
 
+# This is the custom User class 
 class User(AbstractBaseUser, PermissionsMixin): 
   email = models.EmailField(unique=True)
   first_name = models.CharField(max_length=30 )
@@ -32,3 +35,33 @@ class User(AbstractBaseUser, PermissionsMixin):
   def __str__(self):
     return self.email
 
+BLOOD_TYPES = [
+    ('A+', 'A+'),
+    ('A-', 'A-'),
+    ('B+', 'B+'),
+    ('B-', 'B-'),
+    ('AB+', 'AB+'),
+    ('AB-', 'AB-'),
+    ('O+', 'O+'),
+    ('O-', 'O-'),
+]
+
+RH_FACTOR = [
+  ('POSITIVE', 'Positive'),
+  ('NEGATIVE', 'Negative'),
+]
+
+GENDER = [
+  ('MALE', 'MALE'),
+  ('FEMALE', 'FEMALE'),
+  ('OTHER', 'OTHER'),
+]
+
+class DonorProfile(models.Model):
+  user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE) 
+  blood_type = models.CharField(max_length=15, choices=BLOOD_TYPES)
+  rh_factor = models.CharField(max_length=10, choices=RH_FACTOR)
+  contact = models.CharField(max_length=15)
+  address = models.TextField()
+  def __str__(self):
+    return self.blood_type
