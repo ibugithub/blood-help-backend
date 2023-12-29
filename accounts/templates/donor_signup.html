@@ -1,29 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-  <h1> Welcome to the blood help page</h1>
+{% block title %} Donor Registration {% endblock %}
+
+{% block content %}
+
+<div class="flex flex-col items-center mt-10 text-center text-green-500 mb-10">
+  <h1 class="text-2xl font-medium mb-6">Become a Blood Donor</h1>
+
   <form method="post" action="{% url 'donor_signup' %}">
 
     {% csrf_token %}
-    
-  <ul>
-    {% for field in form %}
-        {{ field.label_tag }}
-        <li>{{ field }}</li> 
-        {% for error in field.errors %}
-            <p style="color: red;">{{ error }}</p>
-        {% endfor %}
-    {% endfor %}
-  </ul>
 
-    <button type="submit" > Sign Up </button>
+    <ul class="flex flex-col gap-4">
+      {% for field in form %}
+      {{ field.label_tag }}
+      <li>{{ field }}</li>
+      {% for error in field.errors %}
+      <p style="color: red;">{{ error }}</p>
+      {% endfor %}
+      {% endfor %}
+    </ul>
+
+    <button class=" rounded bg-red-950 text-green-300 mt-5" type="submit"> Sign Up </button>
   </form>
 
-</body>
-</html>
+</div>
+
+{% endblock %}

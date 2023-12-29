@@ -1,23 +1,28 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %} Blood-Help {% endblock %}</title>
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block extracss %} {% endblock %}
 </head>
-<body>
+<body class="bg-slate-300">
 
 <nav>
-    <ul>
-        <li><a href="{% url 'index' %}">Home</a></li>
+    <ul class="flex gap-4 justify-end m-3 ">
+        <li class="bg-red-950 p-3 rounded text-green-300"><a href="{% url 'home' %}">Home</a></li>
+        <li class="bg-red-950 p-3 rounded text-green-300"><a href="{% url 'donor_signup' %}">Register as a Donor</a></li>
     </ul>
 </nav>
 
-<div id="content">
-    {% block content %} {% endblock %}
-</div>
+
+{% block content %} {% endblock %}
 
 
-{% blcok javascript %} {% endblock %}
+
+{% block javascript %} {% endblock %}
 </body>
 </html>

@@ -4,7 +4,7 @@ from .forms import DonorSignUpForm
 
 # Create your views here.
 def hello_view(request):
-  return render(request, 'hello.html')
+  return render(request, 'home.html')
 
 def donor_signup(request):
   if request.method == 'POST':
