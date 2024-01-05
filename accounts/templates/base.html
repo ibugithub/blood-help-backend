@@ -14,6 +14,11 @@
 <nav>
     <ul class="flex gap-4 justify-end m-3 ">
         <li class="bg-red-950 p-3 rounded text-green-300"><a href="{% url 'home' %}">Home</a></li>
+        {% if user.is_authenticated %}
+            <p>Welcome, {{user.email}}! <a href="{% url 'account_logout' %}">Logout</a></p>
+        {% else %}
+            <p><a href="{% url 'account_login' %}"> Login </a></p>
+        {% endif %}
         <li class="bg-red-950 p-3 rounded text-green-300"><a href="{% url 'donor_signup' %}">Register as a Donor</a></li>
     </ul>
 </nav>
