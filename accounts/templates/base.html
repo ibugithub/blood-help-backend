@@ -1,27 +1,35 @@
+{% load compress %} 
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} {% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% compress css %} 
+    <link rel="stylesheet" href="{% static 'src/output.css' %}"> 
+    {% endcompress %} 
+
     {% block extracss %} {% endblock %}
 </head>
 <body class="bg-slate-300">
 
-<nav>
-    <ul class="flex gap-4 justify-end m-3 ">
-        <li class="bg-red-950 p-3 rounded text-green-300"><a href="{% url 'home' %}">Home</a></li>
+{% block nav %}
+<nav class="mt-20 ">
+    <div class="flex gap-4 justify-end m-3 ">
+        <div class="bg-red-950 p-3 rounded text-green-300"><a href="{% url 'home' %}">Home</a></div>
         {% if user.is_authenticated %}
-            <p>Welcome, {{user.email}}! <a href="{% url 'account_logout' %}">Logout</a></p>
+            <p class="bg-red-950 p-3 rounded text-green-300">Welcome, {{user.email}}! </p> 
+            <form action="{% url 'account_logout' %}" method="post">
+                {% csrf_token %}
+                <button class="bg-red-950 p-3 rounded text-green-300" type="submit" >Logout</button>
+            </form>
         {% else %}
-            <p><a href="{% url 'account_login' %}"> Login </a></p>
+            <a class="bg-red-950 p-3 rounded text-green-300" href="{% url 'account_login' %}"> Login </a>
         {% endif %}
-        <li class="bg-red-950 p-3 rounded text-green-300"><a href="{% url 'donor_signup' %}">Register as a Donor</a></li>
-    </ul>
+    </div>
 </nav>
+{% endblock nav %}
 
 
 {% block content %} {% endblock %}

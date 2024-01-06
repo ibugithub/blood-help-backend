@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tailwind',
+    'compressor',
     'accounts',
     'allauth',
     'allauth.account',
@@ -146,3 +148,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+COMPRESS_ROOT = BASE_DIR / 'accounts/static'
+COMPRESS_ENABLED = True
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
