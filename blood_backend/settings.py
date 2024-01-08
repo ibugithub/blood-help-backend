@@ -39,11 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tailwind',
-    'compressor',
     'accounts',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount'
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google', 
+    'allauth.socialaccount.providers.facebook'
     ]
 
 MIDDLEWARE = [
@@ -142,6 +143,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
 ACCOUNT_EMAIL_REQUIRED=True
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 
@@ -149,6 +151,18 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-COMPRESS_ROOT = BASE_DIR / 'accounts/static'
-COMPRESS_ENABLED = True
-STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
+SITE_ID = 1
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'APP': {
+            'client_id': '774856687810362',
+            'secret': 'fd32b8d250646113825d1fe02fa5b264',
+        }
+    },
+    'google': {
+        'APP': {
+            'client_id': '157156938590-cge8rljvidgcu2g8dfeo816ovmq6qlh1.apps.googleusercontent.com',
+            'secret': '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',
+        }
+    }
+}

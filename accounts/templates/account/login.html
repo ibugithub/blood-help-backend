@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="flex flex-col items-center mt-20 gap-4">
+<div class="flex flex-col items-center mt-40 gap-4">
     <p>Don't have an account? <a href="{% url 'donor_signup' %}">Sign up</a></p>
 
     <form class="flex flex-col items-center gap-4" action="{% url 'account_login' %}" method="post">
@@ -16,6 +16,14 @@
 
         <button class="p-2 rounded bg-red-950 text-green-300 mt-5" type="submit"> Sign In </button>
     </form>
+    <hr>
+
+    <!-- Social media login buttons -->
+    <h3>Or log in with:</h3>
+    {% load socialaccount %} 
+    <a href="{% provider_login_url 'google' %}">Google</a>
+    <a href="{% provider_login_url 'facebook' %}">Facebook</a>
+    {% providers_media_js %}
 </div>
 
 

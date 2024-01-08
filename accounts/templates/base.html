@@ -1,21 +1,20 @@
-{% load compress %} 
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} {% endblock %}</title>
-    {% compress css %} 
+ 
     <link rel="stylesheet" href="{% static 'src/output.css' %}"> 
-    {% endcompress %} 
-
+   
     {% block extracss %} {% endblock %}
 </head>
 <body class="bg-slate-300">
 
 {% block nav %}
-<nav class="mt-20 ">
+<nav >
     <div class="flex gap-4 justify-end m-3 ">
         <div class="bg-red-950 p-3 rounded text-green-300"><a href="{% url 'home' %}">Home</a></div>
         {% if user.is_authenticated %}
