@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google', 
-    'allauth.socialaccount.providers.facebook'
+    'allauth.socialaccount.providers.google'
     ]
 
 MIDDLEWARE = [
@@ -155,12 +154,6 @@ LOGOUT_REDIRECT_URL = 'home'
 
 SITE_ID = 1
 SOCIALACCOUNT_PROVIDERS = {
-    'facebook': {
-        'APP': {
-            'client_id': '774856687810362',
-            'secret': 'fd32b8d250646113825d1fe02fa5b264',
-        }
-    },
     'google': {
         'APP': {
             'client_id': '157156938590-cge8rljvidgcu2g8dfeo816ovmq6qlh1.apps.googleusercontent.com',
