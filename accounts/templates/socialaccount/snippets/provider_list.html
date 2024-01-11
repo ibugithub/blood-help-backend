@@ -1,0 +1,25 @@
+{% load allauth socialaccount %}
+{% load static %}
+{% get_providers as socialaccount_providers %}
+{% if socialaccount_providers %}
+    {% element provider_list %}
+        {% for provider in socialaccount_providers %}
+            {% if provider.id == "openid" %}
+                {% for brand in provider.get_brands %}
+                    {% provider_login_url provider openid=brand.openid_url process=process as href %}
+                    {% element provider name=brand.name provider_id=provider.id href=href %}
+                    {% endelement %}
+                {% endfor %}
+            {% endif %}
+            {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
+            {% if provider.name == 'Google' %}
+              <form method="post"  action="{{href}}">
+                {% csrf_token %}
+                <button type="submit" aria-label="sign in with google">
+                  <img class="h-10" src="{% static 'images/social.png' %}" alt="">
+                </button>
+              </form>
+            {% endif %}
+        {% endfor %}
+    {% endelement %}
+{% endif %}

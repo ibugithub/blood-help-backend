@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "postcss ./accounts/static/src/input.css -o ./accounts/static/src/output.css",
-    "dev": "npx tailwindcss -i ./accounts/static/src/input.css -o ./accounts/static/src/output.css --watch"
+    "build": "postcss ./accounts/static/css/input.css -o ./accounts/static/css/output.css",
+    "dev": "npx tailwindcss -i ./accounts/static/css/input.css -o ./accounts/static/css/output.css --watch"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+{% load static %}
 {% load allauth account socialaccount %}
+
 {% block title %}
 sign in
 {% endblock title %}
@@ -13,15 +15,24 @@ sign in
     </p>
     <form class="flex flex-col gap-3 mt-10" action="{% url 'account_login' %}" method="post">
         {% csrf_token %}
-        <label for="">Email</label>
-        <input name="login" type="text" placeholder="Email">
-        <label for="">Password</label>
-        <input name="password" type="password" placeholder="password">
+
+        <label for="login">Email</label>
+        <input id="login" name="login" type="text" placeholder="Email">
+        <span class="text-red-800">{{ form.login.errors }}</span>
+        <span class="text-red-800">{{ username_error }}</span>
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="password">
+        <span class="text-red-800">{{ form.password.errors }}</span>
+        <span class="text-red-800">{{ password_error }}</span>
+
         <button type="submit">
             <p class="rounded bg-red-950 text-green-300 p-2">signin</p>
         </button>
     </form>
 
     {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+
+
 </div>
 {% endblock content %}
