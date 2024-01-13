@@ -29,3 +29,12 @@ class CustomLoginView(DjangoLoginView):
     print(form.errors)
 
     return HttpResponseBadRequest("Invalid form submission. Please check your credentials.")
+  
+  def form_valid(self, form):
+        # This method is called when the form is valid (i.e., correct credentials)
+
+        # Add your custom logic here, for example, print success message
+        print("Successful login!")
+
+        # Call the parent class's form_valid method to perform the default behavior
+        return super().form_valid(form)

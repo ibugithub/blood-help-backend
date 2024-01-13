@@ -19,12 +19,17 @@ sign in
         <label for="login">Email</label>
         <input id="login" name="login" type="text" placeholder="Email">
         <span class="text-red-800">{{ form.login.errors }}</span>
-        <span class="text-red-800">{{ username_error }}</span>
+
 
         <label for="password">Password</label>
         <input id="password" name="password" type="password" placeholder="password">
         <span class="text-red-800">{{ form.password.errors }}</span>
-        <span class="text-red-800">{{ password_error }}</span>
+
+        {% for error in form.non_field_errors %}
+        <div class="invalid-feedback w-[14rem]">
+            {{ error }}
+        </div>
+        {% endfor %}
 
         <button type="submit">
             <p class="rounded bg-red-950 text-green-300 p-2">signin</p>
