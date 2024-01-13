@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import render
 from .forms import DonorSignUpForm
-from allauth.account.views import LoginView
+from allauth.account.views import LoginView as DjangoLoginView
 from allauth.account.forms import LoginForm
+from django.http import HttpResponseBadRequest
 
 # Create your views here.
 def hello_view(request):
@@ -20,18 +21,11 @@ def donor_signup(request):
     form = DonorSignUpForm()
   return render(request, 'donor_signup.html', {'form' : form})
 
-class CustomLoginView(LoginView):
-  form_class = LoginForm
-  print('I am here at main view')
 
+class CustomLoginView(DjangoLoginView):
+  print("I am in the custom Login veiw")
   def form_invalid(self, form):
-    print('I am here at the form')
-    response = super().form_invalid(form)
+    print("Invalid form submission. Errors:")
+    print(form.errors)
 
-    username_error = form.errors.get('username', None)
-    password_error = form.errors.get('password', None)
-
-    response.context_data['username_error'] = username_error
-    response.context_data['password_error'] = password_error
-
-    return response
+    return HttpResponseBadRequest("Invalid form submission. Please check your credentials.")
