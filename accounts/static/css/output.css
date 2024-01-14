@@ -548,6 +548,10 @@ video {
   position: static;
 }
 
+.m-2 {
+  margin: 0.5rem;
+}
+
 .m-3 {
   margin: 0.75rem;
 }
@@ -578,18 +582,6 @@ video {
 
 .h-10 {
   height: 2.5rem;
-}
-
-.w-\[22rem\] {
-  width: 22rem;
-}
-
-.w-\[12rem\] {
-  width: 12rem;
-}
-
-.w-\[15rem\] {
-  width: 15rem;
 }
 
 .w-\[14rem\] {
@@ -640,6 +632,15 @@ video {
 
 .p-3 {
   padding: 0.75rem;
+}
+
+.p-1 {
+  padding: 0.25rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .text-center {

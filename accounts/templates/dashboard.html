@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} Donor Dashboard {% endblock title %} 
+
+{% block content %} 
+<div class="flex flex-col items-center gap-3  text-green-500 mb-10">
+  <h1>Donor Dashboard</h1>
+  <form class="flex flex-col items-center gap-3 " action="{% url 'dashboard' %}" method="post">
+    {% csrf_token %} 
+    <div class="flex flex-col items-center gap-3">
+      {{form.as_p}}
+    </div>
+    <button class=" rounded bg-red-950 text-green-300 mt-5 p-2 px-4" type="submit">Save</button>
+  </form>
+</div>
+
+
+
+{% endblock content %}

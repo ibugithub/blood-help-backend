@@ -2,16 +2,12 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import DonorProfile 
 from django.contrib.auth import get_user_model
+from .models import DonorProfile
 
 class DonorSignUpForm(UserCreationForm):
-  blood_type = forms.ChoiceField(choices=DonorProfile._meta.get_field('blood_type').choices)
-  rh_factor = forms.ChoiceField(choices=DonorProfile._meta.get_field('rh_factor').choices)
-  contact = forms.CharField(max_length=15)
-  address = forms.CharField(widget=forms.Textarea)
-
   class Meta:
     model = get_user_model()
-    fields = ['email', 'password1', 'password2', 'blood_type', 'rh_factor', 'contact', 'address' ]
+    fields = ['email', 'password1', 'password2']
 
   def save(self, commit=True):
     user = super().save(commit=False)
@@ -21,10 +17,7 @@ class DonorSignUpForm(UserCreationForm):
     if commit:
       user.save()
 
-    DonorProfile.objects.create(
-      user = user,
-      blood_type=self.cleaned_data['blood_type'],
-      rh_factor=self.cleaned_data['rh_factor'],
-      contact=self.cleaned_data['contact'],
-      address=self.cleaned_data['address']
-    )
+class DonorProfileForm(forms.ModelForm):
+  class Meta:
+    model = DonorProfile
+    fields = ['blood_type', 'rh_factor', 'contact', 'address']

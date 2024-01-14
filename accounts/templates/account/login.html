@@ -17,16 +17,16 @@ sign in
         {% csrf_token %}
 
         <label for="login">Email</label>
-        <input id="login" name="login" type="text" placeholder="Email">
+        <input class="p-1" id="login" name="login" type="text" placeholder="Email">
         <span class="text-red-800">{{ form.login.errors }}</span>
 
 
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" placeholder="password">
+        <input class="p-1" id="password" name="password" type="password" placeholder="password">
         <span class="text-red-800">{{ form.password.errors }}</span>
 
         {% for error in form.non_field_errors %}
-        <div class="invalid-feedback w-[14rem]">
+        <div class="invalid-feedback w-[14rem] text-red-800">
             {{ error }}
         </div>
         {% endfor %}

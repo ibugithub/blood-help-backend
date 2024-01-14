@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import render
 from .forms import DonorSignUpForm
-from allauth.account.views import LoginView as DjangoLoginView
-from allauth.account.forms import LoginForm
-from django.http import HttpResponseBadRequest
+from .forms import DonorProfileForm
+from .models import DonorProfile
 
 # Create your views here.
 def hello_view(request):
@@ -15,26 +14,30 @@ def donor_signup(request):
     form = DonorSignUpForm(request.POST)
     if form.is_valid():
       form.save()
-      return redirect('home')
+      return redirect('login')
 
   else:
     form = DonorSignUpForm()
   return render(request, 'donor_signup.html', {'form' : form})
 
 
-class CustomLoginView(DjangoLoginView):
-  print("I am in the custom Login veiw")
-  def form_invalid(self, form):
-    print("Invalid form submission. Errors:")
-    print(form.errors)
+def DonorProfileView(request):
 
-    return HttpResponseBadRequest("Invalid form submission. Please check your credentials.")
-  
-  def form_valid(self, form):
-        # This method is called when the form is valid (i.e., correct credentials)
+  try:
+    print('I am in try block')
+    donor_profile = DonorProfile.objects.get(user=request.user)
+    form = DonorProfileForm(instance=donor_profile)
+    print('the donor profile is ',donor_profile)
+    print('the donor profile form is', form)
+  except DonorProfile.DoesNotExist:
+    print("I am in the except block")
+    form = DonorProfileForm()
 
-        # Add your custom logic here, for example, print success message
-        print("Successful login!")
-
-        # Call the parent class's form_valid method to perform the default behavior
-        return super().form_valid(form)
+  if request.method == 'POST':
+    form = DonorProfileForm(request.POST, instance=donor_profile)
+    if form.is_valid():
+      donor_profile = form.save(commit=False)
+      donor_profile.user = request.user
+      donor_profile.save()
+      return redirect('dashboard')
+  return render(request, 'dashboard.html', {'form': form})
