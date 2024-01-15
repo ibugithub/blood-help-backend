@@ -21,18 +21,9 @@ def donor_signup(request):
   return render(request, 'donor_signup.html', {'form' : form})
 
 
-def DonorProfileView(request):
-
-  try:
-    print('I am in try block')
-    donor_profile = DonorProfile.objects.get(user=request.user)
-    form = DonorProfileForm(instance=donor_profile)
-    print('the donor profile is ',donor_profile)
-    print('the donor profile form is', form)
-  except DonorProfile.DoesNotExist:
-    print("I am in the except block")
-    form = DonorProfileForm()
-
+def DonorProfileView(request): 
+  donor_profile, created = DonorProfile.objects.get_or_create(user=request.user)
+  form = DonorProfileForm(instance=donor_profile)
   if request.method == 'POST':
     form = DonorProfileForm(request.POST, instance=donor_profile)
     if form.is_valid():

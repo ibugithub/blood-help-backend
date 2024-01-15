@@ -59,9 +59,9 @@ GENDER = [
 
 class DonorProfile(models.Model):
   user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE) 
-  blood_type = models.CharField(max_length=15, choices=BLOOD_TYPES)
-  rh_factor = models.CharField(max_length=10, choices=RH_FACTOR)
-  contact = models.CharField(max_length=15)
-  address = models.TextField()
+  blood_type = models.CharField(max_length=15, choices=BLOOD_TYPES, blank=True, null=True)
+  rh_factor = models.CharField(max_length=10, choices=RH_FACTOR, blank=True, null=True)
+  contact = models.CharField(max_length=15, blank=True, null=True)
+  address = models.TextField(blank=True, null=True)
   def __str__(self):
     return self.blood_type
