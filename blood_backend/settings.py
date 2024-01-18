@@ -142,6 +142,7 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by email
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
 ACCOUNT_EMAIL_REQUIRED=True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USERNAME_REQUIRED = False

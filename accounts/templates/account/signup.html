@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load allauth i18n socialaccount %}
+{% block title %}
+    {% trans "Signup" %}
+{% endblock title %}
+{% block content %}
+    <div class="flex flex-col items-center text-green-500"> 
+        <div class="mt-12 flex flex-col gap-3">
+            <p>
+                {% blocktrans %}Already have an account? Then please <a class="rounded bg-red-950 text-green-300 mt-5 p-2" href="{{ login_url }}">sign in</a>.{% endblocktrans %}
+            </p>
+            {% url 'account_signup' as action_url %}
+            {% element form form=form method="post" action=action_url tags="entrance,signup" %}
+                {% slot body %}
+                    {% csrf_token %}
+                    <div class=" flex flex-col gap-3 inputCont">
+                        {% element fields form=form unlabeled=True %}
+                    </div>
+                    {% endelement %}
+                    {% if redirect_field_value %}
+                        <input type="hidden"
+                               name="{{ redirect_field_name }}"
+                               value="{{ redirect_field_value }}" />
+                    {% endif %}
+                {% endslot %}
+                {% slot actions %}
+                <div>
+                    <button class="rounded bg-red-950 text-green-300 mt-5 p-2">
+                        {% trans "Sign Up" %}
+                    </button>
+                </div>
+
+                {% endslot %}
+            {% endelement %}
+            {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        </div>
+    </div>
+
+{% endblock content %}
