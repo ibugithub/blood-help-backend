@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-u988$l7mj&h10v7(mhyq+zmb+*odxz_&bjihe8)$+2s28@#y&7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -69,8 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request'
+                'django.contrib.messages.context_processors.messages'
             ],
         },
     },
@@ -162,3 +161,12 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587  # Update with your SMTP server port
+EMAIL_USE_TLS = True  # Set to True if your SMTP server requires TLS
+EMAIL_HOST_USER ='outsideworkibrahim@gmail.com'
+EMAIL_HOST_PASSWORD = 'vaed cjfc abgt utuw'
