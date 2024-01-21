@@ -1,44 +1,43 @@
 {% extends "base.html" %}
-{% load i18n %}
 {% load allauth account socialaccount %}
 {% block title %}
-    {% trans "Sign In" %}
+login
 {% endblock title %}
 {% block content %}
-    <div class="mt-10 flex flex-col items-center text-green-500">
-        <p class="pl-10">
-            {% blocktrans %}If you have not created an account yet, then please
-        <a class="rounded bg-red-950 text-green-300 mt-5 p-2" href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}
-        </p>
-        {% url 'account_login' as login_url %}
-        {% element form form=form method="post" action=login_url tags="entrance,login" %}
-            {% slot body %}
-                {% csrf_token %}
-    
-                <div class="flex flex-col gap-6 mt-5 inputCont">
-                    {% element fields form=form unlabeled=True %}
-                </div>
-    
-                {% endelement %}
-                {% if redirect_field_value %}
-                    <input type="hidden"
-                           name="{{ redirect_field_name }}"
-                           value="{{ redirect_field_value }}" />
-                {% endif %}
-            {% endslot %}
-            {% slot actions %}
+<div class="mt-28 flex flex-col items-center text-green-500">
+    <p class="">
+        If you have not created an account yet, then please
+        <a class="rounded bg-red-950 text-green-300 mt-5 p-2" href="{{ signup_url }}">sign up</a> first.
+    </p>
+    <form action="{% url 'login' %}" method="post" class="mb-10">
+        {% csrf_token %}
+
+        <div class="flex flex-col gap-3 mt-5 inputCont w-[330px]">
+            {% for field in form %}
             <div>
-                <button type="submit" class="rounded bg-red-950 text-green-300 mt-5 p-2">
-                    {% trans "Sign In" %}
-                </button>
+                {{ field.label_tag }}
+                {{ field }}
             </div>
+            {% endfor %}
+            <div class="text-red-500"> {{form.non_field_errors}} </div>
+        </div>
 
-                   
-                
-            {% endslot %}
-        {% endelement %}
-        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+     
+        <a href="{% url 'account_reset_password' %}"> Forget your password? 
+        </a>   
+        
+        <div>
+            <button type="submit" class="rounded bg-red-950 text-green-300 mt-5 p-2">
+                Sign In
+            </button>
+        </div>
+    </form>
 
-    </div>
+    {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+
+</div>
 
 {% endblock content %}
