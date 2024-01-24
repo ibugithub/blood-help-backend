@@ -20,7 +20,7 @@
         <div class="flex gap-4 justify-end m-3 ">
             <div class="bg-red-950 p-3 rounded text-green-300"><a href="{% url 'home' %}">Home</a></div>
             {% if user.is_authenticated %}
-            
+
             <a href="{% url 'dashboard' %}">
                 <p class="bg-red-950 p-3 rounded text-green-300">Welcome, {{user.email}}! </p>
             </a>
@@ -35,6 +35,18 @@
         </div>
     </nav>
     {% endblock nav %}
+
+    {% block message %}
+
+
+    {% if messages %}
+    <ul class="text-green-400 p-5 text-center">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endblock message %}
 
 
     {% block content %} {% endblock %}
