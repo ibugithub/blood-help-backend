@@ -15,6 +15,9 @@ class LoginApi(LoginView):
       return super(LoginApi, self).dispatch(request, *args, **kwargs)
   print('I am at the bottom of the dispatch method')
 
+  def form_valid(self, form):
+    print('I am in form valid method')
+
 
 def DonorProfileView(request): 
   donor_profile, created = DonorProfile.objects.get_or_create(user=request.user)
