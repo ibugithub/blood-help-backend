@@ -8,4 +8,5 @@ urlpatterns = [
   path ('signup', SignupView.as_view(), name='signup'),
   path('accounts/login/', views.LoginApi.as_view(), name='login'),
   path ('accounts/dashboard/', views.DonorProfileView, name='dashboard'),
+  path('api/register', views.RegisterUserView.as_view(), name='restR'),
 ]

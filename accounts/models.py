@@ -52,6 +52,13 @@ GENDER = [
   ('OTHER', 'OTHER'),
 ]
 
+class UserOtp(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
+  otp_code = models.CharField(max_length=6, unique=True )
+
+  def __str__(self):
+    return f"{self.user.email}--passcode"
+
 class DonorProfile(models.Model):
   user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE) 
   blood_type = models.CharField(max_length=15, choices=BLOOD_TYPES, blank=True, null=True)
