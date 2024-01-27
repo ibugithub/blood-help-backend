@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import render
-from .forms import DonorSignUpForm
 from .forms import DonorProfileForm
 from .models import DonorProfile
 from allauth.account.views import LoginView
@@ -9,6 +8,7 @@ from .serializers import UserRegisterSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .utils import send_code_to_user
+from .models import UserOtp
 # Create your views here.
 def hello_view(request):
   return render(request, 'home.html')
@@ -52,7 +52,26 @@ class RegisterUserView(GenericAPIView):
       send_code_to_user(user['email'])
       return Response ({
         'data': user,
-        'message': f"{user['email']} Thanks for registering"
+        'message': f"{user['first_name']} {user['last_name']} Thanks for registering"
       }, status = status.HTTP_201_CREATED)
     
     return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+  
+
+class VerifyEmailView(GenericAPIView):
+  def post(self, request):
+    otpCode = request.data.get('otpCode')
+    try:
+      user_code_obj = UserOtp.objects.get(otp_code = otpCode)
+      user = user_code_obj.otp_code
+      if not user.is_valid():
+        user.is_verified = True
+        user.save()
+        return Response({
+          'message' : 'account email verified successfully'
+        }, status.status.HTTP_200_OK) 
+      return Response({
+        'message' : 'code is invalid user already verified' 
+      }, status = status.HTTP_204_NO_CONTENT)
+    except UserOtp.DoesNotExist:
+      return Response({ 'message' : 'passcode does not exist' }, status = status.HTTP_404_NOT_FOUND)
