@@ -61,15 +61,18 @@ class RegisterUserView(GenericAPIView):
 class VerifyEmailView(GenericAPIView):
   def post(self, request):
     otpCode = request.data.get('otpCode')
+    print('the otpCode', otpCode)
     try:
       user_code_obj = UserOtp.objects.get(otp_code = otpCode)
-      user = user_code_obj.otp_code
-      if not user.is_valid():
+      print('the user_code_obj is', user_code_obj)
+      user = user_code_obj.user
+      print('the user', user)
+      if not user.is_verified:
         user.is_verified = True
         user.save()
         return Response({
           'message' : 'account email verified successfully'
-        }, status.status.HTTP_200_OK) 
+        }, status = status.HTTP_200_OK) 
       return Response({
         'message' : 'code is invalid user already verified' 
       }, status = status.HTTP_204_NO_CONTENT)
