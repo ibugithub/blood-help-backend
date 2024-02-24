@@ -4,7 +4,7 @@ from .forms import DonorProfileForm
 from .models import DonorProfile
 from allauth.account.views import LoginView
 from rest_framework.generics import GenericAPIView
-from .serializers import UserRegisterSerializer
+from .serializers import UserRegisterSerializer, LoginSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .utils import send_code_to_user
@@ -61,12 +61,9 @@ class RegisterUserView(GenericAPIView):
 class VerifyEmailView(GenericAPIView):
   def post(self, request):
     otpCode = request.data.get('otpCode')
-    print('the otpCode', otpCode)
     try:
       user_code_obj = UserOtp.objects.get(otp_code = otpCode)
-      print('the user_code_obj is', user_code_obj)
       user = user_code_obj.user
-      print('the user', user)
       if not user.is_verified:
         user.is_verified = True
         user.save()
@@ -78,3 +75,12 @@ class VerifyEmailView(GenericAPIView):
       }, status = status.HTTP_204_NO_CONTENT)
     except UserOtp.DoesNotExist:
       return Response({ 'message' : 'passcode does not exist' }, status = status.HTTP_404_NOT_FOUND)
+
+
+class LoginApiView(GenericAPIView):
+  serializer_class = LoginSerializer
+  def post(self, request):
+    serializer = self.serializer_class(data = request.data, context= {'request': request})
+    serializer.is_valid(raise_exception=True)
+
+    

@@ -174,3 +174,9 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True  
 EMAIL_HOST_USER ='outsideworkibrahim@gmail.com'
 EMAIL_HOST_PASSWORD = 'vaed cjfc abgt utuw'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
