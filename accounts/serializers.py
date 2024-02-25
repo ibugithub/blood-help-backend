@@ -29,26 +29,32 @@ class UserRegisterSerializer(serializers.ModelSerializer):
   
 
 class LoginSerializer(serializers.ModelSerializer):
-  email = serializers.EmailField( max_length=255 )
+  email = serializers.EmailField( max_length=55 )
   password = serializers.CharField( max_length=60, write_only=True )
   access_token = serializers.CharField( max_length=255, read_only=True )
   refresh_token = serializers.CharField( max_length=255, read_only=True )
   class Meta:
     model=User
-    fields=['email', 'password', 'access_token', 'refresh_token']
+    fields=['email','full_name', 'password', 'access_token', 'refresh_token']
 
   def validate( self, attrs ):
     email = attrs.get('email')
     password = attrs.get('password')
     request = self.context.get('request')
     user = authenticate(request, email=email, password = password )
+
     if not user:
       raise AuthenticationFailed("Invalid user credentials") 
-    token = user.token()
+    
+    if not user.is_verified:
+      raise AuthenticationFailed("The Email isn't verified") 
+    
+    token = user.user_token()
 
     return {
       'email' : user.email,
-      'fullName' : user.full_name,
-      'token' : token
+      'full_name' : user.full_name,
+      'access_token' : str(token.get('access')),
+      'refresh_token' : str(token.get('refresh')),
     }
     

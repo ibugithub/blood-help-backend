@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from .managers import UserManager
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 
@@ -24,11 +25,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     return self.email
   
   @property
-  def full_name (self):
+  def full_name(self):
     return f"{self.first_name} {self.last_name}" 
   
-  def tokens (self):
-    pass
+  def user_token(self):
+    refresh = RefreshToken.for_user(self)
+    return {
+      'refresh' : str(refresh),
+      'access' : str(refresh.access_token)
+    }
 
 BLOOD_TYPES = [
     ('A+', 'A+'),

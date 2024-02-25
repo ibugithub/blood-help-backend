@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .utils import send_code_to_user
 from .models import UserOtp
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 def hello_view(request):
   return render(request, 'home.html')
@@ -41,11 +42,8 @@ class RegisterUserView(GenericAPIView):
   serializer_class = UserRegisterSerializer
 
   def post(self, request): 
-    print("i'm in the post method")
     user_data = request.data
-    print("user data is", user_data)
     serializer = self.serializer_class(data = user_data)
-    print("serializer is", serializer)
     if serializer.is_valid(raise_exception=True):
       serializer.save()
       user = serializer.data
@@ -82,5 +80,14 @@ class LoginApiView(GenericAPIView):
   def post(self, request):
     serializer = self.serializer_class(data = request.data, context= {'request': request})
     serializer.is_valid(raise_exception=True)
-
+    print('the data is', serializer)
+    return Response(serializer.data, status=status.HTTP_200_OK)
     
+
+class TestAuthenticationView(GenericAPIView):
+  permission_classes = [IsAuthenticated]
+  def get(self, request):
+    data = {
+      'msg': "The request is authenticated"
+    }
+    return Response(data, status  = status.HTTP_200_OK)
