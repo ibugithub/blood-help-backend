@@ -4,7 +4,7 @@ from .forms import DonorProfileForm
 from .models import DonorProfile
 from allauth.account.views import LoginView
 from rest_framework.generics import GenericAPIView
-from .serializers import UserRegisterSerializer, LoginSerializer
+from .serializers import UserRegisterSerializer, LoginSerializer, PasswordResetSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .utils import send_code_to_user
@@ -90,4 +90,11 @@ class TestAuthenticationView(GenericAPIView):
     data = {
       'msg': "The request is authenticated"
     }
-    return Response(data, status  = status.HTTP_200_OK)
+    return Response(data, status  = status.HTTP_200_OK) 
+  
+class PasswordResetView(GenericAPIView):
+  serializer_class = PasswordResetSerializer 
+  def post(self, request):
+    serializer = self.serializer_class(request.data, context = {'request': request})
+    serializer.is_valid(raise_exception=True)
+    return Response({"message" : "A link has been sent to reset your password"}, status = status.HTTP_200_OK)
