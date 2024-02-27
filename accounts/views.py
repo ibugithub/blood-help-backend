@@ -10,6 +10,9 @@ from rest_framework import status
 from .utils import send_code_to_user
 from .models import UserOtp
 from rest_framework.permissions import IsAuthenticated
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import smart_str, DjangoUnicodeDecodeError
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 # Create your views here.
 def hello_view(request):
   return render(request, 'home.html')
