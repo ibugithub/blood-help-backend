@@ -88,3 +88,6 @@ class PasswordResetSerializer(serializers.ModelSerializer):
       }
       send_email(data)
     return super.validate(attrs)
+
+class SetNewPasswordSerializer(serializers.Serializer):
+  

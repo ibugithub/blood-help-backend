@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import render
 from .forms import DonorProfileForm
-from .models import DonorProfile
+from .models import DonorProfile, User
 from allauth.account.views import LoginView
 from rest_framework.generics import GenericAPIView
 from .serializers import UserRegisterSerializer, LoginSerializer, PasswordResetSerializer
@@ -100,4 +100,23 @@ class PasswordResetView(GenericAPIView):
   def post(self, request):
     serializer = self.serializer_class(request.data, context = {'request': request})
     serializer.is_valid(raise_exception=True)
-    return Response({"message" : "A link has been sent to reset your password"}, status = status.HTTP_200_OK)
+    return Response({"message" : "A link has been sent to reset your password"}, status = status.HTTP_200_OK) 
+  
+
+class PasswordResetConfirm(GenericAPIView):
+  def get(self, uidb64, token):
+    try:
+      user_id = smart_str(urlsafe_base64_decode(uidb64))
+      user = User.objects.get(id = user_id)
+      if not PasswordResetTokenGenerator.check_token(user, token): 
+        return Response({"message": "Token has invalid or has expired"}, status=status.HTTP_401_UNAUTHORIZED)
+      return Response({"success": True, "messages": "Credentials is valid", "uidb64": uidb64, "token": token}, status=status.HTTP_200_OK)
+    
+    except DjangoUnicodeDecodeError:
+      return Response({"message": "Token has invalid or has expired"}, status=status.HTTP_401_UNAUTHORIZED) 
+
+class SetNewPassword(GenericAPIView):
+  serializer_class = SetNewPasswordSerializer 
+
+  def post (self, request):
+     
