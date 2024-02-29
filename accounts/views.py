@@ -4,7 +4,7 @@ from .forms import DonorProfileForm
 from .models import DonorProfile, User
 from allauth.account.views import LoginView
 from rest_framework.generics import GenericAPIView
-from .serializers import UserRegisterSerializer, LoginSerializer, PasswordResetSerializer
+from .serializers import UserRegisterSerializer, LoginSerializer, PasswordResetSerializer, SetNewPasswordSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .utils import send_code_to_user
@@ -98,17 +98,16 @@ class TestAuthenticationView(GenericAPIView):
 class PasswordResetView(GenericAPIView):
   serializer_class = PasswordResetSerializer 
   def post(self, request):
-    serializer = self.serializer_class(request.data, context = {'request': request})
+    serializer = self.serializer_class(data = request.data, context = {'request': request})
     serializer.is_valid(raise_exception=True)
     return Response({"message" : "A link has been sent to reset your password"}, status = status.HTTP_200_OK) 
   
-
-class PasswordResetConfirm(GenericAPIView):
-  def get(self, uidb64, token):
+class PasswordResetConfirm(GenericAPIView): 
+  def get(self, request, uidb64, token):
     try:
       user_id = smart_str(urlsafe_base64_decode(uidb64))
       user = User.objects.get(id = user_id)
-      if not PasswordResetTokenGenerator.check_token(user, token): 
+      if not PasswordResetTokenGenerator().check_token(user, token): 
         return Response({"message": "Token has invalid or has expired"}, status=status.HTTP_401_UNAUTHORIZED)
       return Response({"success": True, "messages": "Credentials is valid", "uidb64": uidb64, "token": token}, status=status.HTTP_200_OK)
     
@@ -118,5 +117,8 @@ class PasswordResetConfirm(GenericAPIView):
 class SetNewPassword(GenericAPIView):
   serializer_class = SetNewPasswordSerializer 
 
-  def post (self, request):
+  def patch(self, request):
+    serializer = self.serializer_class(data=request.data) 
+    serializer.is_valid(raise_exception=True)
+    return Response({"message": "password Reset done"}, status=status.HTTP_200_OK)
      
