@@ -116,7 +116,6 @@ class PasswordResetConfirm(GenericAPIView):
 
 class SetNewPassword(GenericAPIView):
   serializer_class = SetNewPasswordSerializer 
-
   def patch(self, request):
     serializer = self.serializer_class(data=request.data) 
     serializer.is_valid(raise_exception=True)

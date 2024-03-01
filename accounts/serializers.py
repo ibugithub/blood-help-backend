@@ -71,6 +71,7 @@ class PasswordResetSerializer(serializers.Serializer):
     Fields = ["email"]
   
   def validate(self, attrs):
+    print("I am in the valid method of passwordResetSerializer")
     email = attrs.get('email')
     if User.objects.filter(email=email).exists():
       user = User.objects.get(email=email)
@@ -97,8 +98,10 @@ class SetNewPasswordSerializer(serializers.Serializer):
   class Meta:
     Fields = ["password", "confirm_password", "uidb64", "token"] 
 
-  def valid(self, attrs):
+  def validate(self, attrs):
+    print("I am here in the valid method of set new password serializer")
     try:
+      print("I am in the try block")
       password = attrs.get('password')
       confirm_password = attrs.get('confirm_password') 
       uidb64 = attrs.get('uidb64') 
@@ -106,13 +109,15 @@ class SetNewPasswordSerializer(serializers.Serializer):
 
       user_id = force_str(urlsafe_base64_decode(uidb64))
       user = User.objects.get(id = user_id) 
+      print('the user is ', user)
       if not PasswordResetTokenGenerator().check_token(user, token):
         raise AuthenticationFailed("Password link is invalid or has expired", 401) 
       if password != confirm_password:
         raise AuthenticationFailed("Password didn't match") 
-      
       user.set_password(password)
       user.save()
+      print('the user is ', user)
       return user
-    except AuthenticationFailed:
+    except Exception as e:
+      print("I am in the exception block")
       raise AuthenticationFailed("Password link is invalid or has expired")
