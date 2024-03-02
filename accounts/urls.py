@@ -14,5 +14,6 @@ urlpatterns = [
   path ('api/testAuth/', views.TestAuthenticationView.as_view(), name='testAuth'),
   path ('api/reset-password/', views.PasswordResetView.as_view(),  name='reset-password'),
   path ('api/reset-password-confirm/<uidb64>/<token>/', views.PasswordResetConfirm.as_view(), name='reset-password-confirm'),
-  path ('api/set-new-password/', views.SetNewPassword.as_view(), name='set-new-password')
+  path ('api/set-new-password/', views.SetNewPassword.as_view(), name='set-new-password'),
+  path('api/logout/', views.LogoutView.as_view(), name='Logout')
 ]

@@ -4,7 +4,7 @@ from .forms import DonorProfileForm
 from .models import DonorProfile, User
 from allauth.account.views import LoginView
 from rest_framework.generics import GenericAPIView
-from .serializers import UserRegisterSerializer, LoginSerializer, PasswordResetSerializer, SetNewPasswordSerializer
+from .serializers import UserRegisterSerializer, LoginSerializer, PasswordResetSerializer, SetNewPasswordSerializer, LogoutSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .utils import send_code_to_user
@@ -40,7 +40,6 @@ def DonorProfileView(request):
       return redirect('dashboard')
   return render(request, 'dashboard.html', {'form': form})
 
-
 class RegisterUserView(GenericAPIView):
   serializer_class = UserRegisterSerializer
 
@@ -58,7 +57,6 @@ class RegisterUserView(GenericAPIView):
     
     return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
   
-
 class VerifyEmailView(GenericAPIView):
   def post(self, request):
     otpCode = request.data.get('otpCode')
@@ -77,7 +75,6 @@ class VerifyEmailView(GenericAPIView):
     except UserOtp.DoesNotExist:
       return Response({ 'message' : 'passcode does not exist' }, status = status.HTTP_404_NOT_FOUND)
 
-
 class LoginApiView(GenericAPIView):
   serializer_class = LoginSerializer
   def post(self, request):
@@ -86,7 +83,6 @@ class LoginApiView(GenericAPIView):
     print('the data is', serializer)
     return Response(serializer.data, status=status.HTTP_200_OK)
     
-
 class TestAuthenticationView(GenericAPIView):
   permission_classes = [IsAuthenticated]
   def get(self, request):
@@ -121,3 +117,12 @@ class SetNewPassword(GenericAPIView):
     serializer.is_valid(raise_exception=True)
     return Response({"message": "password Reset done"}, status=status.HTTP_200_OK)
      
+class LogoutView(GenericAPIView):
+  serializer_class = LogoutSerializer 
+  permission_classes = [IsAuthenticated]
+
+  def post(self, request):
+    serializer = self.serializer_class(data=request.data) 
+    serializer.is_valid(raise_exception=True) 
+    serializer.save() 
+    return Response(status=status.HTTP_204_NO_CONTENT)
