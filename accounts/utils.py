@@ -2,6 +2,7 @@ import random
 from .models import User, UserOtp
 from django.conf import settings
 from django.core.mail import EmailMessage
+from google.auth.transport import requests
 
 def generateOtp():
   otp = ""

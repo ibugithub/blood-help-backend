@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from .managers import UserManager
 from rest_framework_simplejwt.tokens import RefreshToken
 
-
+AUTH_PROVIDERS = {'email':'email', 'google':'google', 'github':'github', 'facebook':'facebook'}
 
 # This is the custom User class 
 class User(AbstractBaseUser, PermissionsMixin): 
@@ -17,7 +17,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   is_superuser = models.BooleanField(default=False)
   is_verified = models.BooleanField(default=False)
   date_joined = models.DateField(default=timezone.now)
-
+  auth_provider = models.CharField(max_length=50, default=AUTH_PROVIDERS.get('email'))
   objects = UserManager() 
   USERNAME_FIELD = 'email'
   REQUIRED_FIELDS = ['first_name', 'last_name']
