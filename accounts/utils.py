@@ -2,14 +2,12 @@ import random
 from .models import User, UserOtp
 from django.conf import settings
 from django.core.mail import EmailMessage
-from google.auth.transport import requests
 
 def generateOtp():
   otp = ""
   for i in range(6):
     otp += str(random.randint(0,9))
   return otp
-
 
 def send_code_to_user(userEmail):
   Subject = "One time passcode for email verification"
