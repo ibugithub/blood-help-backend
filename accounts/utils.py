@@ -3,6 +3,7 @@ from .models import User, UserOtp
 from django.conf import settings
 from django.core.mail import EmailMessage
 
+
 def generateOtp():
   otp = ""
   for i in range(6):
